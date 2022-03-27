@@ -22,15 +22,10 @@ app.get('/', (req,res)=> {
 });
 
 app.get('/login', (req,res)=> {
-  var cookie = req.cookies.test_cookie;
-  if (cookie === undefined) {
-    var randomNumber = Math.random().toString();
-    randomNumber = randomNumber.substring(2,randomNumber.length);
-    res.cookie('test_cookie', randomNumber, { maxAge: 3600, httpOnly: true, path:'/', sameSite: "none", secure: true });
-    res.redirect('checkCookie');
-  } else {
-    res.render("login", { cookie: cookie });
-  } 
+  var randomNumber = Math.random().toString();
+  randomNumber = randomNumber.substring(2,randomNumber.length);
+  res.cookie('test_cookie', randomNumber, { maxAge: 3600, httpOnly: true, path:'/', sameSite: "none", secure: true });
+  res.redirect('checkCookie');
 });
 
 app.get('/checkCookie', (req,res)=> {
