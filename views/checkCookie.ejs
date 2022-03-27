@@ -23,25 +23,27 @@
     <br>
     <a href="../login">Login again</a>
     <br>
-    <a href="#" id="requestStorageAccess">Try setting storage access</a>
+    <a href="#" id="requestStorageAccess">Request storage access</a>
 </body>
 <script>
     function requestStorageAccess() {
         document.requestStorageAccess().then(() => {
-            console.log("requestStorageAccess: Got cookie access for Safari workaround");
+            console.log("requestStorageAccess: Got cookie access!");
             document.cookie = "foo=bar";
         }, () => {
-            console.log('requestStorageAccess: Access denied')
+            console.log('requestStorageAccess: Access denied');
         }).catch((error) => {
-            console.log("requestStorageAccess: Could not get access for Safari workaround: " + error);
+            console.log("requestStorageAccess: Could not get access : " + error);
         });
     }
 
     function setHasStorageAccess() {
         document.hasStorageAccess().then((status) => {
+            console.log('hasStorageAccess: ', status);
             document.getElementById("hasStorageAccess").innerHTML = status;
             if(!status) requestStorageAccess();
         }).catch((error) => {
+            console.log('hasStorageAccess: Error - ', error);
             document.getElementById("hasStorageAccess").innerHTML = error;
         });
     }
