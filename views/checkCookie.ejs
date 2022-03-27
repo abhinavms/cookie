@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Tester</title>
+</head>
+<body>
+    <% if(success){ %>
+        <h1>checkCookie: Login successful. <br> Cookies were set !!</h1>
+        <br>
+        <h2> Value = 
+            <span id="cookieValue"><%= cookie %></span>
+        </h2>
+    <% } else{ %>  
+        <h1>checkCookie: Login failed !! <br> Cookies were not set !!!</h1>
+    <% } %>
+    <br>
+    <h2>document.hasStorageAccess() : 
+        <span id="hasStorageAccess"></span>
+    </h2>
+    <br>
+    <a href="../login">Login again</a>
+    <br>
+    <a href="#" id="requestStorageAccess">Try setting storage access</a>
+</body>
+<script>
+    function requestStorageAccess() {
+        document.requestStorageAccess().then(() => {
+            console.log("requestStorageAccess: Got cookie access for Safari workaround");
+            document.cookie = "foo=bar";
+        }, () => {
+            console.log('requestStorageAccess: Access denied')
+        }).catch((error) => {
+            console.log("requestStorageAccess: Could not get access for Safari workaround: " + error);
+        });
+    }
+
+    function setHasStorageAccess() {
+        document.hasStorageAccess().then((status) => {
+            document.getElementById("hasStorageAccess").innerHTML = status;
+            if(!status) requestStorageAccess();
+        }).catch((error) => {
+            document.getElementById("hasStorageAccess").innerHTML = error;
+        });
+    }
+
+    setHasStorageAccess();
+
+    let clickOrTouchEvent = 'ontouchstart' in window ? 'touchstart' : 'click';
+    document.getElementById('requestStorageAccess').addEventListener(clickOrTouchEvent, setHasStorageAccess);
+
+</script>
+</html>
